@@ -157,6 +157,28 @@
     .notice { display: none; margin: 12px 0 0; color: #a13224; font: .85rem Arial, sans-serif; }
     .notice.show { display: block; }
     @keyframes drift { from { transform: translateY(-7px) rotate(0); } to { transform: translateY(14px) rotate(8deg); } }
+
+    .validation-panel { margin: 12px 0 0; padding: 13px 15px; border-radius: 12px; background: #f7eddf; border: 1px solid #dfd0bf; font: .85rem/1.5 Arial, sans-serif; }
+    .validation-panel.valid { background: #edf5e9; border-color: #b6d2a8; color: #28552a; }
+    .validation-panel.invalid { background: #fff0e9; border-color: #e6b8a6; color: #7a2b1c; }
+    .validation-panel ul { margin: 7px 0 0; padding-left: 19px; }
+    .charge-summary { margin-top: 10px; padding-top: 5px; border-top: 1px solid var(--line); font: .9rem/1.5 Arial, sans-serif; }
+    .charge-row { display: flex; justify-content: space-between; align-items: start; gap: 15px; padding: 7px 0; }
+    .charge-row span:first-child { color: var(--muted); }
+    .charge-row strong { white-space: nowrap; text-align: right; }
+    .charge-row.total-known { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 13px; font-size: 1rem; }
+    .charge-row.total-known strong { color: #8e642d; font-size: 1.25rem; }
+    .charge-row .pending { white-space: normal; max-width: 55%; font-weight: 600; }
+    .terms { background: #f2e5d2; }
+    .terms-card { max-width: 850px; margin: auto; padding: clamp(22px, 4vw, 36px); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 7px 22px rgba(50,29,24,.04); }
+    .terms-card ol { padding-left: 22px; margin-bottom: 0; }
+    .terms-card li { margin: 10px 0; color: #6e5c51; }
+    .product-minimum { display: block; margin-top: 4px; color: #8e642d; font: .72rem Arial, sans-serif; }
+    .order-card button:disabled { cursor: not-allowed; opacity: .48; transform: none; }
+    .gift-wrap-control { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .gift-wrap-control input { width: 90px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
     @media (max-width: 760px) {
       .nav { min-height: 60px; width: calc(100% - 28px); }
       .navlinks { gap: 12px; }
@@ -200,6 +222,7 @@
         <a href="#story">Our Story</a>
         <a href="#menu">Chocolates</a>
         <a href="#contact">Contact</a>
+        <a href="#terms">Terms</a>
         <a class="nav-cta" href="#order">Order Now</a>
       </div>
     </nav>
@@ -258,27 +281,72 @@
         <div class="order-intro">
           <div class="eyebrow">Your order, your way</div>
           <h2>Make someone’s day a little sweeter.</h2>
-          <p>Choose quantities below, add your details, and send your order directly to MITHRA on WhatsApp. Your order is not submitted until you send the pre-filled WhatsApp message.</p>
-          <p><strong>Questions?</strong><br>WhatsApp: +91 99815 37214</p>
+          <p>Choose chocolates below, add your details, and send your order directly to MITHRA on WhatsApp.</p>
+          <p><strong>Minimum chocolate subtotal: ₹400</strong><br>Minimum quantities apply separately to each chocolate type selected.</p>
+          <p><strong>WhatsApp:</strong><br>+91 99815 37214</p>
         </div>
-        <form class="order-card" id="orderForm">
+        <form class="order-card" id="orderForm" novalidate>
           <div class="field">
-            <label for="customerName">Your name <span aria-hidden="true">*</span></label>
+            <label for="customerName">Customer name <span aria-hidden="true">*</span></label>
             <input id="customerName" name="customerName" autocomplete="name" maxlength="80" required placeholder="Enter your name">
           </div>
           <div class="field">
-            <label>Choose chocolates and quantities <span aria-hidden="true">*</span></label>
+            <label for="customerPhone">Contact number (optional)</label>
+            <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" maxlength="25" placeholder="Your phone number">
+          </div>
+          <div class="field">
+            <label>Chocolate quantities</label>
             <div id="orderLines"></div>
           </div>
-          <div class="total-row"><span>Total amount</span><strong id="totalAmount" aria-live="polite">₹0</strong></div>
           <div class="field">
-            <label for="customerMessage">Optional message</label>
-            <textarea id="customerMessage" name="customerMessage" maxlength="500" placeholder="Gift note, delivery question, or other details"></textarea>
+            <label for="giftWrapQty">Gift-wrapped boxes (optional, ₹50 each)</label>
+            <div class="gift-wrap-control">
+              <span class="sans" style="font-size:.88rem;color:var(--muted)">Number of boxes</span>
+              <input id="giftWrapQty" type="number" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="Number of gift-wrapped boxes">
+            </div>
           </div>
-          <button class="btn btn-dark" type="submit">Order on WhatsApp <span aria-hidden="true">↗</span></button>
-          <p class="fineprint">Prices are calculated from the menu above. Any delivery or other charges, if applicable, can be confirmed in WhatsApp.</p>
+          <div class="total-row"><span>Chocolate subtotal</span><strong id="chocolateSubtotal">₹0</strong></div>
+          <div class="charge-summary" aria-label="Order charge breakdown">
+            <div class="charge-row"><span>Chocolate subtotal</span><strong id="summarySubtotal">₹0</strong></div>
+            <div class="charge-row"><span>Packaging &amp; handling</span><strong id="packagingCharge">₹50</strong></div>
+            <div class="charge-row"><span id="giftWrapLabel">Gift wrapping (0 boxes)</span><strong id="giftWrapCharge">₹0</strong></div>
+            <div class="charge-row"><span>Delivery</span><strong class="pending">At actual — to be confirmed</strong></div>
+            <div class="charge-row total-known"><span>Known total (delivery excluded)</span><strong id="knownTotal">₹50</strong></div>
+          </div>
+          <div class="validation-panel invalid" id="orderValidation" role="status" aria-live="polite">
+            <strong>Order requirements</strong>
+            <div id="validationMessages">Select chocolates to see order requirements.</div>
+          </div>
+          <div class="field" style="margin-top:17px">
+            <label for="customerMessage">Optional message</label>
+            <textarea id="customerMessage" name="customerMessage" maxlength="500" placeholder="Gift note or other details"></textarea>
+          </div>
+          <button class="btn btn-dark" id="submitOrder" type="submit" disabled>Order on WhatsApp</button>
+          <p class="fineprint">Delivery is charged at actual cost and is not included in the known total. MITHRA will confirm the order and final amount before payment.</p>
           <p class="notice" id="orderNotice" role="alert"></p>
         </form>
+      </div>
+    </section>
+
+    <section class="terms" id="terms">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Before you order</div>
+          <h2 class="section-title">Terms &amp; Conditions</h2>
+          <p>Please review the minimum quantities and charges before submitting your order.</p>
+        </div>
+        <div class="terms-card">
+          <ol>
+            <li>Minimum chocolate order value is ₹400, excluding additional charges.</li>
+            <li>Square chocolates must be ordered in quantities of at least 15.</li>
+            <li>Heart and shell chocolates must each be ordered in quantities of at least 20 when selected.</li>
+            <li>Packaging and handling charges are a minimum of ₹50 per order.</li>
+            <li>Delivery charges are calculated at actual cost and confirmed before payment.</li>
+            <li>Gift wrapping costs ₹50 per box.</li>
+            <li>Orders are subject to confirmation by MITHRA through WhatsApp.</li>
+            <li>Customers must confirm the final amount, including delivery charges, before payment.</li>
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -317,20 +385,21 @@
 
   <script>
     /*
-      BEGINNER EDIT GUIDE
-      1. Change product names, prices, descriptions, or image URLs in PRODUCTS below.
-      2. WhatsApp number is stored in WHATSAPP_NUMBER. Use country code + number, digits only.
-      3. Replace INSTAGRAM_URL if your Instagram profile URL is different.
-      4. Product images below are temporary online placeholders; replace with your own hosted image URLs.
+      MITHRA order settings. Edit product names, prices, minimums and image URLs here.
+      All order totals and minimum quantity checks are calculated in this script.
     */
     const WHATSAPP_NUMBER = "919981537214";
     const INSTAGRAM_URL = "https://www.instagram.com/mithrachocolates/";
+    const MINIMUM_CHOCOLATE_SUBTOTAL = 400;
+    const PACKAGING_HANDLING_CHARGE = 50;
+    const GIFT_WRAP_PRICE = 50;
 
     const PRODUCTS = [
       {
         id: "square",
         name: "Square Chocolate",
         price: 30,
+        minimum: 15,
         description: "A classic square-shaped chocolate for a simple, satisfying treat.",
         image: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=800&q=78",
         alt: "Square chocolate pieces"
@@ -339,6 +408,7 @@
         id: "heart",
         name: "Heart Chocolate",
         price: 20,
+        minimum: 20,
         description: "A heart-shaped little treat, lovely for sharing or gifting.",
         image: "https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=800&q=78",
         alt: "Chocolate pieces arranged for gifting"
@@ -347,22 +417,28 @@
         id: "shell",
         name: "Shell Chocolate",
         price: 20,
+        minimum: 20,
         description: "A decorative shell-shaped chocolate with an elegant finish.",
         image: "https://images.unsplash.com/photo-1548907040-4d42e3f7b6b8?auto=format&fit=crop&w=800&q=78",
         alt: "Assorted chocolates"
       }
     ];
 
-    const cart = Object.fromEntries(PRODUCTS.map(product => [product.id, 0]));
+    const quantities = Object.fromEntries(PRODUCTS.map(product => [product.id, 0]));
     const currency = amount => new Intl.NumberFormat("en-IN", {
       style: "currency", currency: "INR", maximumFractionDigits: 0
     }).format(amount);
+
+    function clampQuantity(value) {
+      const number = Number(value);
+      if (value === "" || !Number.isFinite(number) || !Number.isInteger(number) || number < 0) return 0;
+      return Math.min(number, 99);
+    }
 
     function safeImageFallback(image) {
       image.addEventListener("error", () => {
         image.style.display = "none";
         image.parentElement.style.background = "linear-gradient(135deg, #ead8bd, #9b6c4a)";
-        image.parentElement.setAttribute("aria-label", "Chocolate image placeholder");
       }, { once: true });
     }
 
@@ -373,7 +449,7 @@
           <img class="product-image" src="${product.image}" alt="${product.alt}" loading="lazy">
           <div class="product-body">
             <div class="product-top">
-              <h3>${product.name}</h3>
+              <div><h3>${product.name}</h3><span class="product-minimum">Minimum ${product.minimum} when selected</span></div>
               <span class="price">${currency(product.price)}</span>
             </div>
             <p>${product.description}</p>
@@ -389,47 +465,44 @@
           </div>
         </article>
       `).join("");
-
       grid.querySelectorAll("img").forEach(safeImageFallback);
       grid.addEventListener("click", handleProductAction);
       grid.addEventListener("change", event => {
-        if (event.target.matches('input[type="number"]')) {
-          event.target.value = clampQuantity(event.target.value);
-        }
+        if (!event.target.matches('input[type="number"]')) return;
+        setQuantity(event.target.id.replace("menu-qty-", ""), event.target.value);
       });
     }
 
     function renderOrderLines() {
-      const lines = document.getElementById("orderLines");
-      lines.innerHTML = PRODUCTS.map(product => `
+      document.getElementById("orderLines").innerHTML = PRODUCTS.map(product => `
         <div class="order-line">
-          <label for="order-qty-${product.id}">${product.name}<br><small>${currency(product.price)} each</small></label>
+          <label for="order-qty-${product.id}">${product.name}<br><small>${currency(product.price)} each · minimum ${product.minimum}</small></label>
           <input type="number" id="order-qty-${product.id}" data-order-id="${product.id}" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="${product.name} order quantity">
           <span class="line-price" id="line-total-${product.id}">${currency(0)}</span>
         </div>
       `).join("");
-      lines.addEventListener("input", event => {
-        if (event.target.matches("[data-order-id]")) {
-          const quantity = clampQuantity(event.target.value);
-          event.target.value = quantity;
-          cart[event.target.dataset.orderId] = quantity;
-          syncMenuQuantity(event.target.dataset.orderId, quantity);
-          updateTotals();
-        }
+      document.getElementById("orderLines").addEventListener("input", event => {
+        const input = event.target.closest("[data-order-id]");
+        if (!input) return;
+        setQuantity(input.dataset.orderId, input.value, false);
+      });
+      document.getElementById("orderLines").addEventListener("change", event => {
+        const input = event.target.closest("[data-order-id]");
+        if (!input) return;
+        setQuantity(input.dataset.orderId, input.value);
       });
     }
 
-    function clampQuantity(value) {
-      const parsed = Number.parseInt(value, 10);
-      if (!Number.isFinite(parsed) || parsed < 0) return 0;
-      return Math.min(parsed, 99);
-    }
-
-    function syncMenuQuantity(id, quantity) {
-      const input = document.getElementById(`menu-qty-${id}`);
+    function setQuantity(id, value, normalize = true) {
+      if (!(id in quantities)) return;
+      // Empty, negative, fractional, and non-numeric input is normalized to zero.
+      const quantity = clampQuantity(value);
+      quantities[id] = quantity;
+      const menuInput = document.getElementById(`menu-qty-${id}`);
       const orderInput = document.getElementById(`order-qty-${id}`);
-      if (input) input.value = quantity;
-      if (orderInput) orderInput.value = quantity;
+      if (menuInput && (normalize || document.activeElement !== menuInput)) menuInput.value = quantity;
+      if (orderInput && (normalize || document.activeElement !== orderInput)) orderInput.value = quantity;
+      updateSummary();
     }
 
     function handleProductAction(event) {
@@ -437,57 +510,101 @@
       if (!button) return;
       const product = PRODUCTS.find(item => item.id === button.dataset.id);
       if (!product) return;
+      const current = quantities[product.id];
 
-      if (button.dataset.action === "plus" || button.dataset.action === "minus") {
-        const input = document.getElementById(`menu-qty-${product.id}`);
-        const current = clampQuantity(input.value);
-        const next = button.dataset.action === "plus" ? Math.min(99, current + 1) : Math.max(0, current - 1);
-        cart[product.id] = next;
-        syncMenuQuantity(product.id, next);
-        updateTotals();
-      }
-
-      if (button.dataset.action === "add") {
-        const input = document.getElementById(`menu-qty-${product.id}`);
-        const quantity = clampQuantity(input.value);
-        cart[product.id] = quantity;
-        syncMenuQuantity(product.id, quantity);
-        updateTotals();
+      if (button.dataset.action === "plus") {
+        // From zero, selecting a product starts at its minimum order quantity.
+        setQuantity(product.id, current === 0 ? product.minimum : Math.min(99, current + 1));
+      } else if (button.dataset.action === "minus") {
+        // A decrement below the product minimum removes that product type from the order.
+        setQuantity(product.id, current <= product.minimum ? 0 : current - 1);
+      } else if (button.dataset.action === "add") {
         document.getElementById("order").scrollIntoView({ behavior: "smooth" });
-        document.getElementById("orderNotice").textContent = quantity > 0
-          ? `${quantity} × ${product.name} added to your order.`
-          : `Set a quantity above zero for ${product.name} to include it in your order.`;
-        document.getElementById("orderNotice").classList.add("show");
+        const notice = document.getElementById("orderNotice");
+        notice.textContent = current > 0
+          ? `${current} × ${product.name} included in your order summary.`
+          : `Use + to select at least ${product.minimum} ${product.name.toLowerCase()} when including this product.`;
+        notice.classList.add("show");
       }
     }
 
-    function updateTotals() {
-      let total = 0;
+    function getOrderState() {
+      const selected = PRODUCTS
+        .map(product => ({ ...product, quantity: quantities[product.id] }))
+        .filter(product => product.quantity > 0);
+      const chocolateSubtotal = selected.reduce((sum, product) => sum + product.quantity * product.price, 0);
+      const giftWrapInput = document.getElementById("giftWrapQty");
+      const giftWrapQuantity = clampQuantity(giftWrapInput.value);
+      const giftWrapTotal = giftWrapQuantity * GIFT_WRAP_PRICE;
+      const knownTotal = chocolateSubtotal + PACKAGING_HANDLING_CHARGE + giftWrapTotal;
+      const errors = [];
+
+      if (selected.length === 0) errors.push("Select at least one chocolate type.");
+      selected.forEach(product => {
+        if (product.quantity < product.minimum) {
+          errors.push(`${product.name}: choose at least ${product.minimum}; currently selected ${product.quantity}.`);
+        }
+      });
+      if (chocolateSubtotal < MINIMUM_CHOCOLATE_SUBTOTAL) {
+        errors.push(`Chocolate subtotal must be at least ${currency(MINIMUM_CHOCOLATE_SUBTOTAL)}. Add ${currency(MINIMUM_CHOCOLATE_SUBTOTAL - chocolateSubtotal)} more in chocolates.`);
+      }
+
+      return { selected, chocolateSubtotal, giftWrapQuantity, giftWrapTotal, knownTotal, errors };
+    }
+
+    function updateSummary() {
+      const state = getOrderState();
       PRODUCTS.forEach(product => {
-        const quantity = clampQuantity(cart[product.id] || 0);
-        const lineTotal = quantity * product.price;
-        total += lineTotal;
+        const lineTotal = quantities[product.id] * product.price;
         const lineTotalElement = document.getElementById(`line-total-${product.id}`);
         if (lineTotalElement) lineTotalElement.textContent = currency(lineTotal);
-        const orderInput = document.getElementById(`order-qty-${product.id}`);
-        if (orderInput && Number(orderInput.value) !== quantity) orderInput.value = quantity;
-        const menuInput = document.getElementById(`menu-qty-${product.id}`);
-        if (menuInput && Number(menuInput.value) !== quantity) menuInput.value = quantity;
       });
-      document.getElementById("totalAmount").textContent = currency(total);
-      return total;
+
+      document.getElementById("chocolateSubtotal").textContent = currency(state.chocolateSubtotal);
+      document.getElementById("summarySubtotal").textContent = currency(state.chocolateSubtotal);
+      document.getElementById("packagingCharge").textContent = currency(PACKAGING_HANDLING_CHARGE);
+      document.getElementById("giftWrapLabel").textContent = `Gift wrapping (${state.giftWrapQuantity} ${state.giftWrapQuantity === 1 ? "box" : "boxes"})`;
+      document.getElementById("giftWrapCharge").textContent = currency(state.giftWrapTotal);
+      document.getElementById("knownTotal").textContent = currency(state.knownTotal);
+
+      const validation = document.getElementById("orderValidation");
+      const messages = document.getElementById("validationMessages");
+      const submit = document.getElementById("submitOrder");
+      validation.classList.toggle("valid", state.errors.length === 0);
+      validation.classList.toggle("invalid", state.errors.length > 0);
+      if (state.errors.length) {
+        messages.innerHTML = `<ul>${state.errors.map(error => `<li>${escapeHtml(error)}</li>`).join("")}</ul>`;
+      } else {
+        messages.textContent = "Your chocolate subtotal and product quantities meet the order requirements. Delivery is still to be confirmed.";
+      }
+      submit.disabled = state.errors.length > 0;
+      return state;
     }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    document.getElementById("giftWrapQty").addEventListener("input", event => {
+      event.target.value = event.target.value === "" ? "" : clampQuantity(event.target.value);
+      updateSummary();
+    });
+    document.getElementById("giftWrapQty").addEventListener("change", event => {
+      event.target.value = clampQuantity(event.target.value);
+      updateSummary();
+    });
 
     document.getElementById("orderForm").addEventListener("submit", event => {
       event.preventDefault();
       const notice = document.getElementById("orderNotice");
       notice.classList.remove("show");
+
       const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
       const message = document.getElementById("customerMessage").value.trim();
-      const total = updateTotals();
-      const selected = PRODUCTS
-        .map(product => ({ ...product, quantity: clampQuantity(cart[product.id] || 0) }))
-        .filter(product => product.quantity > 0);
+      const state = updateSummary();
 
       if (!name) {
         notice.textContent = "Enter your name before placing the order.";
@@ -495,41 +612,49 @@
         document.getElementById("customerName").focus();
         return;
       }
-      if (selected.length === 0 || total <= 0) {
-        notice.textContent = "Choose at least one chocolate and set its quantity to 1 or more.";
+      // Revalidate at submit time, independent of the disabled button state.
+      if (state.errors.length > 0 || state.chocolateSubtotal < MINIMUM_CHOCOLATE_SUBTOTAL ||
+          state.selected.some(product => product.quantity < product.minimum)) {
+        notice.textContent = "Your order does not meet the minimum requirements. Follow the messages above before continuing.";
         notice.classList.add("show");
-        document.getElementById("orderLines").scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
 
-      const orderLines = selected.map(product =>
-        `• ${product.name} × ${product.quantity} = ${currency(product.price * product.quantity)}`
+      const lines = state.selected.map(product =>
+        `• ${product.name}: ${product.quantity} × ${currency(product.price)} = ${currency(product.quantity * product.price)}`
       );
       const parts = [
-        "Hello MITHRA! I'd like to place an order.",
+        "Hello MITHRA Premium Chocolates, I would like to place an order.",
         "",
-        `Name: ${name}`,
+        `Customer name: ${name}`,
+        phone ? `Contact number: ${phone}` : "Contact number: Not provided",
         "",
-        "Order:",
-        ...orderLines,
+        "CHOCOLATE ORDER",
+        ...lines,
         "",
-        `Total: ${currency(total)}`,
-        message ? `\nMessage: ${message}` : "",
+        `Chocolate subtotal: ${currency(state.chocolateSubtotal)}`,
+        `Packaging and handling: ${currency(PACKAGING_HANDLING_CHARGE)}`,
+        `Gift-wrapped boxes: ${state.giftWrapQuantity}`,
+        `Gift wrapping total: ${currency(state.giftWrapTotal)}`,
+        "Delivery charges: At actual — confirmation pending",
+        `Known total (excluding unconfirmed delivery): ${currency(state.knownTotal)}`,
+        message ? "" : null,
+        message ? `Customer message: ${message}` : null,
         "",
-        "Please confirm availability and any applicable delivery charges."
-      ].filter(Boolean);
+        "Please confirm the order and delivery charges. I will confirm the final amount, including delivery, before payment."
+      ].filter(part => part !== null);
+
       const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts.join("\n"))}`;
       window.open(url, "_blank", "noopener,noreferrer");
     });
 
-    // Keep the profile button linked to the editable Instagram URL.
     document.querySelectorAll('a[href*="instagram.com"]').forEach(link => {
       link.href = INSTAGRAM_URL;
     });
 
     renderProducts();
     renderOrderLines();
-    updateTotals();
+    updateSummary();
   </script>
 </body>
 </html>
