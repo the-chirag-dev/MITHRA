@@ -330,28 +330,27 @@
       </div>
     </section>
 
-   <section class="terms" id="terms">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Before you order</div>
-      <h2 class="section-title">Terms &amp; Conditions</h2>
-      <p>Please review the minimum quantities and charges before submitting your order.</p>
-    </div>
-
-    <div class="terms-card">
-      <ol style="list-style: none; padding-left: 0;">
-        <li>* Minimum chocolate order value is ₹400, excluding additional charges.</li>
-        <li>* Square chocolates must be ordered in quantities of at least 15.</li>
-        <li>* Heart and shell chocolates must each be ordered in quantities of at least 20 when selected.</li>
-        <li>* Packaging and handling charges are a minimum of ₹50 per order.</li>
-        <li>* Delivery charges are calculated at actual cost and confirmed before payment.</li>
-        <li>* Gift wrapping costs ₹50 per box.</li>
-        <li>* Orders are subject to confirmation by MITHRA through WhatsApp.</li>
-        <li>* Customers must confirm the final amount, including delivery charges, before payment.</li>
-      </ol>
-    </div>
-  </div>
-</section>
+    <section class="terms" id="terms">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Before you order</div>
+          <h2 class="section-title">Terms &amp; Conditions</h2>
+          <p>Please review the minimum quantities and charges before submitting your order.</p>
+        </div>
+        <div class="terms-card">
+          <ol>
+            <li>Minimum chocolate order value is ₹400, excluding additional charges.</li>
+            <li>Square chocolates must be ordered in quantities of at least 15.</li>
+            <li>Heart and shell chocolates must each be ordered in quantities of at least 20 when selected.</li>
+            <li>Packaging and handling charges are a minimum of ₹50 per order.</li>
+            <li>Delivery charges are calculated at actual cost and confirmed before payment.</li>
+            <li>Gift wrapping costs ₹50 per box.</li>
+            <li>Orders are subject to confirmation by MITHRA through WhatsApp.</li>
+            <li>Customers must confirm the final amount, including delivery charges, before payment.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
 
     <section class="social" id="instagram">
       <div class="wrap">
@@ -626,28 +625,26 @@
       }
 
       const lines = state.selected.map(product =>
-        `• ${product.name}: ${product.quantity} × ${currency(product.price)} = ${currency(product.quantity * product.price)}`
+        `● ${product.name} × ${product.quantity} = ${currency(product.quantity * product.price)}`
       );
       const parts = [
-        "Hello MITHRA Premium Chocolates, I would like to place an order.",
+        "● MITHRA Premium Chocolates — Order Request",
         "",
-        `Customer name: ${name}`,
-        phone ? `Contact number: ${phone}` : "Contact number: Not provided",
+        `● Customer Name: ${name}`,
+        `● Contact Number: ${phone || "Not provided"}`,
         "",
-        "CHOCOLATE ORDER",
         ...lines,
         "",
-        `Chocolate subtotal: ${currency(state.chocolateSubtotal)}`,
-        `Packaging and handling: ${currency(state.packagingCharge)}`,
-        `Gift-wrapped boxes: ${state.giftWrapQuantity}`,
-        `Gift wrapping total: ${currency(state.giftWrapTotal)}`,
-        `MITHRA order total (excluding delivery): ${currency(state.knownTotal)}`,
-        "Delivery charges: Payable directly to the delivery partner by the customer.",
-        "Delivery charges are not collected by MITHRA and are excluded from the MITHRA order total. Actual delivery charges will be confirmed before dispatch.",
+        `● Chocolate Subtotal: ${currency(state.chocolateSubtotal)}`,
+        `● Packaging & Handling: ${currency(state.packagingCharge)}`,
+        `● Gift Wrapping: ${currency(state.giftWrapTotal)}`,
+        `● Total Payable to MITHRA: ${currency(state.knownTotal)}`,
+        "● Delivery Charges: Paid directly to the delivery partner; excluded from the total above.",
+        "● Delivery charges are not collected by MITHRA. Actual delivery charges will be confirmed before dispatch.",
         message ? "" : null,
-        message ? `Customer message: ${message}` : null,
+        message ? `● Customer Message: ${message}` : null,
         "",
-        "Please confirm the order and delivery charges. I will confirm the final amount, including delivery, before payment."
+        "● Please confirm the order and delivery charges. I will confirm the final amount, including delivery, before payment."
       ].filter(part => part !== null);
 
       const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts.join("\n"))}`;
