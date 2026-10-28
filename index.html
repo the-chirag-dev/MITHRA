@@ -168,7 +168,8 @@
     .charge-row strong { white-space: nowrap; text-align: right; }
     .charge-row.total-known { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 13px; font-size: 1rem; }
     .charge-row.total-known strong { color: #8e642d; font-size: 1.25rem; }
-    .charge-row .pending { white-space: normal; max-width: 55%; font-weight: 600; }
+    .charge-row .pending { white-space: normal; max-width: 58%; font-weight: 600; }
+    .delivery-note { margin: 10px 0 4px; line-height: 1.55; overflow-wrap: anywhere; }
     .terms { background: #f2e5d2; }
     .terms-card { max-width: 850px; margin: auto; padding: clamp(22px, 4vw, 36px); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 7px 22px rgba(50,29,24,.04); }
     .terms-card ol { padding-left: 22px; margin-bottom: 0; }
@@ -310,8 +311,9 @@
             <div class="charge-row"><span>Chocolate subtotal</span><strong id="summarySubtotal">₹0</strong></div>
             <div class="charge-row"><span>Packaging &amp; handling</span><strong id="packagingCharge">₹50</strong></div>
             <div class="charge-row"><span id="giftWrapLabel">Gift wrapping (0 boxes)</span><strong id="giftWrapCharge">₹0</strong></div>
-            <div class="charge-row"><span>Delivery</span><strong class="pending">At actual — to be confirmed</strong></div>
-            <div class="charge-row total-known"><span>Known total (delivery excluded)</span><strong id="knownTotal">₹50</strong></div>
+            <div class="charge-row"><span>Delivery charges</span><strong class="pending">At actual — paid directly to the delivery partner.</strong></div>
+            <div class="charge-row total-known"><span>MITHRA order total (excluding delivery)</span><strong id="knownTotal">₹0</strong></div>
+            <p class="fineprint delivery-note">Delivery charges are payable directly to the delivery partner by the customer. These charges are not collected by MITHRA and are excluded from the order total. Actual delivery charges will be confirmed before dispatch.</p>
           </div>
           <div class="validation-panel invalid" id="orderValidation" role="status" aria-live="polite">
             <strong>Order requirements</strong>
@@ -322,7 +324,7 @@
             <textarea id="customerMessage" name="customerMessage" maxlength="500" placeholder="Gift note or other details"></textarea>
           </div>
           <button class="btn btn-dark" id="submitOrder" type="submit" disabled>Order on WhatsApp</button>
-          <p class="fineprint">Delivery is charged at actual cost and is not included in the known total. MITHRA will confirm the order and final amount before payment.</p>
+          <p class="fineprint">Delivery charges are paid directly to the delivery partner by the customer. They are not collected by MITHRA and are excluded from the MITHRA order total.</p>
           <p class="notice" id="orderNotice" role="alert"></p>
         </form>
       </div>
@@ -536,7 +538,9 @@
       const giftWrapInput = document.getElementById("giftWrapQty");
       const giftWrapQuantity = clampQuantity(giftWrapInput.value);
       const giftWrapTotal = giftWrapQuantity * GIFT_WRAP_PRICE;
-      const knownTotal = chocolateSubtotal + PACKAGING_HANDLING_CHARGE + giftWrapTotal;
+      // Do not show an order charge before the customer has selected any chocolates.
+      const packagingCharge = selected.length > 0 ? PACKAGING_HANDLING_CHARGE : 0;
+      const knownTotal = chocolateSubtotal + packagingCharge + giftWrapTotal;
       const errors = [];
 
       if (selected.length === 0) errors.push("Select at least one chocolate type.");
@@ -549,7 +553,7 @@
         errors.push(`Chocolate subtotal must be at least ${currency(MINIMUM_CHOCOLATE_SUBTOTAL)}. Add ${currency(MINIMUM_CHOCOLATE_SUBTOTAL - chocolateSubtotal)} more in chocolates.`);
       }
 
-      return { selected, chocolateSubtotal, giftWrapQuantity, giftWrapTotal, knownTotal, errors };
+      return { selected, chocolateSubtotal, giftWrapQuantity, giftWrapTotal, packagingCharge, knownTotal, errors };
     }
 
     function updateSummary() {
@@ -562,7 +566,7 @@
 
       document.getElementById("chocolateSubtotal").textContent = currency(state.chocolateSubtotal);
       document.getElementById("summarySubtotal").textContent = currency(state.chocolateSubtotal);
-      document.getElementById("packagingCharge").textContent = currency(PACKAGING_HANDLING_CHARGE);
+      document.getElementById("packagingCharge").textContent = currency(state.packagingCharge);
       document.getElementById("giftWrapLabel").textContent = `Gift wrapping (${state.giftWrapQuantity} ${state.giftWrapQuantity === 1 ? "box" : "boxes"})`;
       document.getElementById("giftWrapCharge").textContent = currency(state.giftWrapTotal);
       document.getElementById("knownTotal").textContent = currency(state.knownTotal);
@@ -633,11 +637,12 @@
         ...lines,
         "",
         `Chocolate subtotal: ${currency(state.chocolateSubtotal)}`,
-        `Packaging and handling: ${currency(PACKAGING_HANDLING_CHARGE)}`,
+        `Packaging and handling: ${currency(state.packagingCharge)}`,
         `Gift-wrapped boxes: ${state.giftWrapQuantity}`,
         `Gift wrapping total: ${currency(state.giftWrapTotal)}`,
-        "Delivery charges: At actual — confirmation pending",
-        `Known total (excluding unconfirmed delivery): ${currency(state.knownTotal)}`,
+        `MITHRA order total (excluding delivery): ${currency(state.knownTotal)}`,
+        "Delivery charges: Payable directly to the delivery partner by the customer.",
+        "Delivery charges are not collected by MITHRA and are excluded from the MITHRA order total. Actual delivery charges will be confirmed before dispatch.",
         message ? "" : null,
         message ? `Customer message: ${message}` : null,
         "",
