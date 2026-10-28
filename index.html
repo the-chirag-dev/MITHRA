@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#321d18">
+  <meta name="description" content="Discover MITHRA Premium Handmade Chocolates in Bhopal. Explore our chocolate menu and place an order through WhatsApp.">
+  <meta property="og:title" content="MITHRA Premium Chocolates">
+  <meta property="og:description" content="Crafted with Love, Made to Delight. Explore handmade chocolates by MITHRA, Bhopal.">
+  <meta property="og:type" content="website">
+  <title>MITHRA Premium Chocolates | Crafted with Love</title>
+  <style>
+    :root {
+      --brown: #321d18;
+      --brown-2: #4a2b23;
+      --cream: #fff9ef;
+      --beige: #ead8bd;
+      --gold: #bd9556;
+      --ink: #2c211d;
+      --muted: #75665e;
+      --white: #fffdf9;
+      --line: rgba(74, 43, 35, .15);
+      --shadow: 0 16px 44px rgba(50, 29, 24, .10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 82px; }
+    body {
+      margin: 0; color: var(--ink); background: var(--cream);
+      font-family: Georgia, "Times New Roman", serif; line-height: 1.6;
+    }
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .sans { font-family: Arial, Helvetica, sans-serif; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; background: rgba(255,249,239,.94);
+      border-bottom: 1px solid var(--line); backdrop-filter: blur(12px);
+    }
+    .nav {
+      width: min(1120px, calc(100% - 36px)); margin: auto; min-height: 68px;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-size: 1.1rem; font-weight: bold; letter-spacing: .15em; }
+.nav-logo { width: 42px; height: 42px; object-fit: contain; border-radius: 50%; display: block; }
+    .wordmark span { color: var(--gold); }
+    .navlinks { display: flex; align-items: center; gap: 23px; }
+    .navlinks a { text-decoration: none; font: 500 .82rem Arial, sans-serif; color: var(--muted); }
+    .navlinks a:hover { color: var(--brown); }
+    .nav-cta { background: var(--brown); color: white !important; padding: 10px 15px; border-radius: 99px; }
+    .hero {
+      position: relative; overflow: hidden; min-height: 590px; display: grid; align-items: center;
+      background: radial-gradient(ellipse at 80% 30%, #754a35 0%, transparent 35%),
+                  radial-gradient(ellipse at 70% 100%, #5a3528 0%, transparent 42%), var(--brown);
+      color: var(--cream);
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; border: 1px solid rgba(234,216,189,.16);
+      border-radius: 50%; width: 410px; height: 410px; right: -95px; top: 65px;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .hero::after { width: 300px; height: 300px; right: -40px; top: 120px; animation-delay: -4s; }
+    .hero-inner {
+      width: min(1120px, calc(100% - 40px)); margin: auto; padding: 80px 0;
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 44px; align-items: center; position: relative; z-index: 1;
+    }
+    .eyebrow { font: 700 .72rem Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+    h1 { font-size: clamp(3.3rem, 8vw, 6.6rem); letter-spacing: .11em; line-height: .98; margin: 18px 0 12px; }
+    .hero h2 { font-size: clamp(1.2rem, 2.8vw, 1.8rem); font-weight: normal; margin: 0 0 13px; }
+    .hero p { max-width: 470px; color: #e7d9c9; margin: 0 0 28px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid transparent; border-radius: 99px; padding: 13px 20px;
+      text-decoration: none; cursor: pointer; font: 700 .88rem Arial, sans-serif;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-gold { background: var(--gold); color: #24140f; }
+    .btn-outline { border-color: rgba(255,249,239,.5); color: var(--cream); background: transparent; }
+    .btn-dark { background: var(--brown); color: white; }
+    .btn-light { background: var(--white); color: var(--brown); border-color: var(--line); }
+    .hero-art { position: relative; min-height: 340px; display: grid; place-items: center; }
+    .hero-art img {
+      width: min(100%, 440px); aspect-ratio: 1 / 1; object-fit: contain; border-radius: 20px;
+      border: 1px solid rgba(234,216,189,.24); box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      background: #000;
+    }
+    .seal {
+      position: absolute; bottom: 0; left: 0; width: 94px; height: 94px; border-radius: 50%;
+      background: var(--beige); color: var(--brown); display: grid; place-items: center; text-align: center;
+      font: 700 .68rem/1.45 Arial, sans-serif; letter-spacing: .1em; transform: rotate(-10deg);
+      border: 1px solid var(--gold); box-shadow: var(--shadow);
+    }
+    section { padding: 82px 0; }
+    .wrap { width: min(1080px, calc(100% - 36px)); margin: auto; }
+    .section-head { max-width: 650px; margin: 0 auto 38px; text-align: center; }
+    .section-head .eyebrow { color: #98713e; }
+    h2.section-title { font-size: clamp(2rem, 4vw, 3.15rem); font-weight: normal; line-height: 1.12; margin: 9px 0 14px; }
+    .section-head p { color: var(--muted); margin: 0; }
+    .story { background: #f2e5d2; }
+    .story-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: center; }
+    .story-image { min-height: 330px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .story-image img { width: 100%; height: 100%; min-height: 330px; object-fit: cover; display: block; }
+    .story-copy h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: normal; line-height: 1.1; margin: 10px 0 17px; }
+    .story-copy p { color: #6e5c51; }
+    .signature { margin-top: 24px; color: var(--brown); font-style: italic; }
+    .menu { background: var(--cream); }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .product-card {
+      background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 7px 22px rgba(50,29,24,.04); transition: transform .22s, box-shadow .22s;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .product-image { width: 100%; aspect-ratio: 1.22 / 1; object-fit: cover; display: block; background: #e5d2bc; }
+    .product-body { padding: 20px; }
+    .product-top { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .product-card h3 { margin: 0; font-size: 1.28rem; font-weight: normal; }
+    .price { color: #8e642d; font: 700 1.05rem Arial, sans-serif; white-space: nowrap; }
+    .product-card p { font: .88rem/1.55 Arial, sans-serif; color: var(--muted); min-height: 43px; margin: 10px 0 17px; }
+    .quantity-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .quantity-control { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 99px; overflow: hidden; }
+    .quantity-control button { border: 0; width: 34px; height: 36px; background: #f4eadb; cursor: pointer; color: var(--brown); }
+    .quantity-control input { width: 37px; border: 0; text-align: center; background: transparent; font: 700 .9rem Arial, sans-serif; color: var(--ink); outline-offset: 2px; }
+    .add-btn { padding: 10px 13px; font-size: .78rem; }
+    .order-section { background: #ead8bd; }
+    .order-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 30px; align-items: start; }
+    .order-intro { padding: 15px 4px; }
+    .order-intro h2 { font-size: clamp(2.1rem, 4vw, 3.2rem); line-height: 1.1; font-weight: normal; margin: 10px 0 16px; }
+    .order-intro p { color: #6b584c; }
+    .order-card { background: var(--white); padding: clamp(20px, 4vw, 34px); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .field { margin-bottom: 17px; }
+    .field label { display: block; font: 700 .8rem Arial, sans-serif; margin-bottom: 7px; }
+    .field input, .field textarea {
+      width: 100%; border: 1px solid #dfd0bf; border-radius: 11px; padding: 12px 13px;
+      background: #fffdfa; color: var(--ink); font: .95rem Arial, sans-serif;
+    }
+    .field input:focus, .field textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+    .field textarea { resize: vertical; min-height: 85px; }
+    .order-line { display: grid; grid-template-columns: 1fr 82px 74px; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); font: .9rem Arial, sans-serif; }
+    .order-line input { width: 72px; padding: 8px; border: 1px solid #dfd0bf; border-radius: 8px; }
+    .order-line .line-price { text-align: right; font-weight: 700; }
+    .total-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; font: 700 1rem Arial, sans-serif; }
+    .total-row strong { font-size: 1.35rem; color: #8e642d; }
+    .order-card .btn { width: 100%; }
+    .fineprint { color: var(--muted); font: .76rem/1.5 Arial, sans-serif; margin: 12px 0 0; }
+    .social { text-align: center; background: var(--brown-2); color: var(--cream); }
+    .social .section-head p { color: #dfcfc0; }
+    .social-handle { font: 700 1.25rem Arial, sans-serif; letter-spacing: .02em; margin: 22px 0; }
+    .contact { background: #fff9ef; }
+    .contact-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: #f7eddf; }
+    .contact-panel h3 { font-size: 1.65rem; font-weight: normal; margin: 0 0 7px; }
+    .contact-panel p { margin: 5px 0; color: var(--muted); }
+    .contact-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+    footer { padding: 25px 18px; text-align: center; background: #24140f; color: #dfcfc0; font: .8rem Arial, sans-serif; }
+    footer strong { color: var(--beige); letter-spacing: .08em; }
+    .notice { display: none; margin: 12px 0 0; color: #a13224; font: .85rem Arial, sans-serif; }
+    .notice.show { display: block; }
+    @keyframes drift { from { transform: translateY(-7px) rotate(0); } to { transform: translateY(14px) rotate(8deg); } }
+    @media (max-width: 760px) {
+      .nav { min-height: 60px; width: calc(100% - 28px); }
+      .navlinks { gap: 12px; }
+      .navlinks a:not(.nav-cta) { display: none; }
+      .hero { min-height: unset; }
+      .hero-inner { grid-template-columns: 1fr; gap: 18px; padding: 64px 0 45px; }
+      .hero-art { min-height: 260px; }
+      .hero-art img { width: min(78%, 330px); }
+      .hero::before { width: 280px; height: 280px; right: -90px; top: auto; bottom: 30px; }
+      .hero::after { width: 210px; height: 210px; right: -50px; top: auto; bottom: 65px; }
+      section { padding: 62px 0; }
+      .story-grid, .order-layout { grid-template-columns: 1fr; gap: 24px; }
+      .story-image, .story-image img { min-height: 245px; }
+      .product-grid { grid-template-columns: 1fr; gap: 17px; }
+      .product-card { display: grid; grid-template-columns: 38% 1fr; }
+      .product-image { height: 100%; min-height: 225px; aspect-ratio: auto; }
+      .product-body { padding: 16px; }
+      .product-card p { min-height: 0; margin: 8px 0 13px; }
+      .quantity-row { align-items: start; flex-direction: column; }
+      .add-btn { width: 100%; }
+      .contact-panel { grid-template-columns: 1fr; padding: 23px; }
+      .contact-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 380px) {
+      .product-card { grid-template-columns: 1fr; }
+      .product-image { height: 205px; min-height: 0; }
+      .quantity-row { flex-direction: row; align-items: center; }
+      .add-btn { width: auto; }
+      .order-line { grid-template-columns: 1fr 70px 60px; gap: 5px; font-size: .82rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="wordmark" href="#home" aria-label="MITHRA home"><img class="nav-logo" src="mithra-logo.png" alt=""><span>MITHRA<span>.</span></span></a>
+      <div class="navlinks">
+        <a href="#story">Our Story</a>
+        <a href="#menu">Chocolates</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="#order">Order Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">A little box of happiness</div>
+          <h1>MITHRA</h1>
+          <h2>Premium Handmade Chocolates</h2>
+          <p>Crafted with Love, Made to Delight.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="#menu">Explore Chocolates <span aria-hidden="true">↘</span></a>
+            <a class="btn btn-outline" href="#order">Order on WhatsApp</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="mithra-logo.png" alt="MITHRA Premium Chocolates gold emblem and Crafted with Love, Made to Delight tagline" fetchpriority="high">
+          <div class="seal" aria-label="Handmade with care">MADE WITH<br>CARE &<br>CREATIVITY</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="story">
+      <div class="wrap story-grid">
+        <div class="story-image">
+          <img src="https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=900&q=80" alt="Chocolate pieces prepared for gifting" loading="lazy">
+        </div>
+        <div class="story-copy">
+          <div class="eyebrow">A little about us</div>
+          <h2>Made thoughtfully.<br>Shared joyfully.</h2>
+          <p>MITHRA is built around the simple joy of sharing chocolate. Each creation is approached with care, creativity, and attention to detail—from the shape of each piece to the moment it is gifted.</p>
+          <p>Whether it is a small treat for yourself or a thoughtful gift for someone special, we want every MITHRA box to feel personal.</p>
+          <div class="signature">Crafted with Love, Made to Delight.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu" id="menu">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">The chocolate menu</div>
+          <h2 class="section-title">Small treats, lovely moments.</h2>
+          <p>Choose your favourites, set the quantity, and add them to your WhatsApp order.</p>
+        </div>
+        <div class="product-grid" id="productGrid">
+          <!-- Product names, prices, descriptions, and image URLs are configured in the PRODUCTS array below. -->
+        </div>
+      </div>
+    </section>
+
+    <section class="order-section" id="order">
+      <div class="wrap order-layout">
+        <div class="order-intro">
+          <div class="eyebrow">Your order, your way</div>
+          <h2>Make someone’s day a little sweeter.</h2>
+          <p>Choose quantities below, add your details, and send your order directly to MITHRA on WhatsApp. Your order is not submitted until you send the pre-filled WhatsApp message.</p>
+          <p><strong>Questions?</strong><br>WhatsApp: +91 99815 37214</p>
+        </div>
+        <form class="order-card" id="orderForm">
+          <div class="field">
+            <label for="customerName">Your name <span aria-hidden="true">*</span></label>
+            <input id="customerName" name="customerName" autocomplete="name" maxlength="80" required placeholder="Enter your name">
+          </div>
+          <div class="field">
+            <label>Choose chocolates and quantities <span aria-hidden="true">*</span></label>
+            <div id="orderLines"></div>
+          </div>
+          <div class="total-row"><span>Total amount</span><strong id="totalAmount" aria-live="polite">₹0</strong></div>
+          <div class="field">
+            <label for="customerMessage">Optional message</label>
+            <textarea id="customerMessage" name="customerMessage" maxlength="500" placeholder="Gift note, delivery question, or other details"></textarea>
+          </div>
+          <button class="btn btn-dark" type="submit">Order on WhatsApp <span aria-hidden="true">↗</span></button>
+          <p class="fineprint">Prices are calculated from the menu above. Any delivery or other charges, if applicable, can be confirmed in WhatsApp.</p>
+          <p class="notice" id="orderNotice" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="social" id="instagram">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Follow the sweetness</div>
+          <h2 class="section-title">A little MITHRA in your feed.</h2>
+          <p>Follow along for chocolate creations, gifting inspiration, and updates.</p>
+          <div class="social-handle">@mithrachocolates</div>
+          <a class="btn btn-gold" href="https://www.instagram.com/mithrachocolates/" target="_blank" rel="noopener noreferrer">Follow Us on Instagram ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <div class="contact-panel">
+          <div>
+            <div class="eyebrow">Get in touch</div>
+            <h3>MITHRA Premium Chocolates</h3>
+            <p>Bhopal, Madhya Pradesh, India</p>
+            <p class="sans">WhatsApp: +91 99815 37214</p>
+            <p class="sans">Instagram: @mithrachocolates</p>
+          </div>
+          <div class="contact-actions">
+            <a class="btn btn-dark" href="https://wa.me/919981537214?text=Hello%20MITHRA%2C%20I%27d%20like%20to%20know%20more%20about%20your%20chocolates." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+            <a class="btn btn-light" href="https://www.instagram.com/mithrachocolates/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Made with love by <strong>MITHRA.</strong></footer>
+
+  <script>
+    /*
+      BEGINNER EDIT GUIDE
+      1. Change product names, prices, descriptions, or image URLs in PRODUCTS below.
+      2. WhatsApp number is stored in WHATSAPP_NUMBER. Use country code + number, digits only.
+      3. Replace INSTAGRAM_URL if your Instagram profile URL is different.
+      4. Product images below are temporary online placeholders; replace with your own hosted image URLs.
+    */
+    const WHATSAPP_NUMBER = "919981537214";
+    const INSTAGRAM_URL = "https://www.instagram.com/mithrachocolates/";
+
+    const PRODUCTS = [
+      {
+        id: "square",
+        name: "Square Chocolate",
+        price: 30,
+        description: "A classic square-shaped chocolate for a simple, satisfying treat.",
+        image: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=800&q=78",
+        alt: "Square chocolate pieces"
+      },
+      {
+        id: "heart",
+        name: "Heart Chocolate",
+        price: 20,
+        description: "A heart-shaped little treat, lovely for sharing or gifting.",
+        image: "https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=800&q=78",
+        alt: "Chocolate pieces arranged for gifting"
+      },
+      {
+        id: "shell",
+        name: "Shell Chocolate",
+        price: 20,
+        description: "A decorative shell-shaped chocolate with an elegant finish.",
+        image: "https://images.unsplash.com/photo-1548907040-4d42e3f7b6b8?auto=format&fit=crop&w=800&q=78",
+        alt: "Assorted chocolates"
+      }
+    ];
+
+    const cart = Object.fromEntries(PRODUCTS.map(product => [product.id, 0]));
+    const currency = amount => new Intl.NumberFormat("en-IN", {
+      style: "currency", currency: "INR", maximumFractionDigits: 0
+    }).format(amount);
+
+    function safeImageFallback(image) {
+      image.addEventListener("error", () => {
+        image.style.display = "none";
+        image.parentElement.style.background = "linear-gradient(135deg, #ead8bd, #9b6c4a)";
+        image.parentElement.setAttribute("aria-label", "Chocolate image placeholder");
+      }, { once: true });
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = PRODUCTS.map(product => `
+        <article class="product-card">
+          <img class="product-image" src="${product.image}" alt="${product.alt}" loading="lazy">
+          <div class="product-body">
+            <div class="product-top">
+              <h3>${product.name}</h3>
+              <span class="price">${currency(product.price)}</span>
+            </div>
+            <p>${product.description}</p>
+            <div class="quantity-row">
+              <div class="quantity-control" aria-label="${product.name} quantity selector">
+                <button type="button" data-action="minus" data-id="${product.id}" aria-label="Decrease ${product.name} quantity">−</button>
+                <input type="number" min="0" max="99" step="1" value="0" inputmode="numeric"
+                  id="menu-qty-${product.id}" aria-label="${product.name} quantity">
+                <button type="button" data-action="plus" data-id="${product.id}" aria-label="Increase ${product.name} quantity">+</button>
+              </div>
+              <button class="btn btn-dark add-btn" type="button" data-action="add" data-id="${product.id}">Add to Order</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      grid.querySelectorAll("img").forEach(safeImageFallback);
+      grid.addEventListener("click", handleProductAction);
+      grid.addEventListener("change", event => {
+        if (event.target.matches('input[type="number"]')) {
+          event.target.value = clampQuantity(event.target.value);
+        }
+      });
+    }
+
+    function renderOrderLines() {
+      const lines = document.getElementById("orderLines");
+      lines.innerHTML = PRODUCTS.map(product => `
+        <div class="order-line">
+          <label for="order-qty-${product.id}">${product.name}<br><small>${currency(product.price)} each</small></label>
+          <input type="number" id="order-qty-${product.id}" data-order-id="${product.id}" min="0" max="99" step="1" value="0" inputmode="numeric" aria-label="${product.name} order quantity">
+          <span class="line-price" id="line-total-${product.id}">${currency(0)}</span>
+        </div>
+      `).join("");
+      lines.addEventListener("input", event => {
+        if (event.target.matches("[data-order-id]")) {
+          const quantity = clampQuantity(event.target.value);
+          event.target.value = quantity;
+          cart[event.target.dataset.orderId] = quantity;
+          syncMenuQuantity(event.target.dataset.orderId, quantity);
+          updateTotals();
+        }
+      });
+    }
+
+    function clampQuantity(value) {
+      const parsed = Number.parseInt(value, 10);
+      if (!Number.isFinite(parsed) || parsed < 0) return 0;
+      return Math.min(parsed, 99);
+    }
+
+    function syncMenuQuantity(id, quantity) {
+      const input = document.getElementById(`menu-qty-${id}`);
+      const orderInput = document.getElementById(`order-qty-${id}`);
+      if (input) input.value = quantity;
+      if (orderInput) orderInput.value = quantity;
+    }
+
+    function handleProductAction(event) {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+      const product = PRODUCTS.find(item => item.id === button.dataset.id);
+      if (!product) return;
+
+      if (button.dataset.action === "plus" || button.dataset.action === "minus") {
+        const input = document.getElementById(`menu-qty-${product.id}`);
+        const current = clampQuantity(input.value);
+        const next = button.dataset.action === "plus" ? Math.min(99, current + 1) : Math.max(0, current - 1);
+        cart[product.id] = next;
+        syncMenuQuantity(product.id, next);
+        updateTotals();
+      }
+
+      if (button.dataset.action === "add") {
+        const input = document.getElementById(`menu-qty-${product.id}`);
+        const quantity = clampQuantity(input.value);
+        cart[product.id] = quantity;
+        syncMenuQuantity(product.id, quantity);
+        updateTotals();
+        document.getElementById("order").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("orderNotice").textContent = quantity > 0
+          ? `${quantity} × ${product.name} added to your order.`
+          : `Set a quantity above zero for ${product.name} to include it in your order.`;
+        document.getElementById("orderNotice").classList.add("show");
+      }
+    }
+
+    function updateTotals() {
+      let total = 0;
+      PRODUCTS.forEach(product => {
+        const quantity = clampQuantity(cart[product.id] || 0);
+        const lineTotal = quantity * product.price;
+        total += lineTotal;
+        const lineTotalElement = document.getElementById(`line-total-${product.id}`);
+        if (lineTotalElement) lineTotalElement.textContent = currency(lineTotal);
+        const orderInput = document.getElementById(`order-qty-${product.id}`);
+        if (orderInput && Number(orderInput.value) !== quantity) orderInput.value = quantity;
+        const menuInput = document.getElementById(`menu-qty-${product.id}`);
+        if (menuInput && Number(menuInput.value) !== quantity) menuInput.value = quantity;
+      });
+      document.getElementById("totalAmount").textContent = currency(total);
+      return total;
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const notice = document.getElementById("orderNotice");
+      notice.classList.remove("show");
+      const name = document.getElementById("customerName").value.trim();
+      const message = document.getElementById("customerMessage").value.trim();
+      const total = updateTotals();
+      const selected = PRODUCTS
+        .map(product => ({ ...product, quantity: clampQuantity(cart[product.id] || 0) }))
+        .filter(product => product.quantity > 0);
+
+      if (!name) {
+        notice.textContent = "Enter your name before placing the order.";
+        notice.classList.add("show");
+        document.getElementById("customerName").focus();
+        return;
+      }
+      if (selected.length === 0 || total <= 0) {
+        notice.textContent = "Choose at least one chocolate and set its quantity to 1 or more.";
+        notice.classList.add("show");
+        document.getElementById("orderLines").scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      const orderLines = selected.map(product =>
+        `• ${product.name} × ${product.quantity} = ${currency(product.price * product.quantity)}`
+      );
+      const parts = [
+        "Hello MITHRA! I'd like to place an order.",
+        "",
+        `Name: ${name}`,
+        "",
+        "Order:",
+        ...orderLines,
+        "",
+        `Total: ${currency(total)}`,
+        message ? `\nMessage: ${message}` : "",
+        "",
+        "Please confirm availability and any applicable delivery charges."
+      ].filter(Boolean);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts.join("\n"))}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+
+    // Keep the profile button linked to the editable Instagram URL.
+    document.querySelectorAll('a[href*="instagram.com"]').forEach(link => {
+      link.href = INSTAGRAM_URL;
+    });
+
+    renderProducts();
+    renderOrderLines();
+    updateTotals();
+  </script>
+</body>
+</html>
